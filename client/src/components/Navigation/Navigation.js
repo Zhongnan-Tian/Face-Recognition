@@ -1,8 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './Navigation.css';
+// import GoogleAuth from '../GoogleAuth';
 
-const Navigation = () => {
+const Navigation = props => {
   return (
     <div>
       <nav
@@ -24,14 +26,15 @@ const Navigation = () => {
           <div id="collapseItems" className="collapse navbar-collapse">
             <ul className="navbar-nav ml-auto">
               <li className="nav-item">
-                <a href="/" className="nav-link">
-                  Register
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="/" className="nav-link">
+                {/* <a href="/" className="nav-link">
                   Login
-                </a>
+                </a> */}
+                {/* <GoogleAuth /> */}
+                {props.isSignedIn ? (
+                  <button onClick={props.logOut} className="btn btn-info">
+                    Logout
+                  </button>
+                ) : null}
               </li>
             </ul>
           </div>
@@ -41,4 +44,8 @@ const Navigation = () => {
   );
 };
 
-export default Navigation;
+const mapStateToProps = state => {
+  return { isSignedIn: state.auth.isSignedIn };
+};
+
+export default connect(mapStateToProps)(Navigation);

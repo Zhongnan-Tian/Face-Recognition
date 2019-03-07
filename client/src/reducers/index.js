@@ -1,5 +1,7 @@
 import { combineReducers } from 'redux';
 
+import authReducer from './authReducer';
+
 // const INITIAL_STATE = {
 //   url: '',
 //   height: '',
@@ -15,9 +17,9 @@ const imageURLReducer = (state = '', action) => {
   }
 };
 
-const imageSizeReducer = (state = [], action) => {
+const imageBoxReducer = (state = [], action) => {
   switch (action.type) {
-    case 'UPDATE_SIZE':
+    case 'FETCH_BOXES':
       // const newState = {
       //   ...state,
       //   height: action.payload.height,
@@ -32,5 +34,6 @@ const imageSizeReducer = (state = [], action) => {
 
 export default combineReducers({
   imageURL: imageURLReducer,
-  boxes: imageSizeReducer
+  boxes: imageBoxReducer,
+  auth: authReducer
 });

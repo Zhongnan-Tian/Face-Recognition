@@ -7,6 +7,19 @@ const app = new Clarifai.App({
   apiKey: CLARIFAI_KEY
 });
 
+export const userSignedIn = id => {
+  return {
+    type: 'SIGN_IN',
+    payload: id
+  };
+};
+
+export const userSignedOut = () => {
+  return {
+    type: 'SIGN_OUT'
+  };
+};
+
 export const updateImageURL = url => {
   return {
     type: 'UPDATE_URL',
@@ -14,7 +27,7 @@ export const updateImageURL = url => {
   };
 };
 
-export const updateImageSize = (height, width) => {
+export const fetchImageBoxes = (height, width) => {
   return async function(dispatch, getState) {
     //const imageSize = { height: height, width: width };
 
@@ -41,7 +54,7 @@ export const updateImageSize = (height, width) => {
     });
 
     dispatch({
-      type: 'UPDATE_SIZE',
+      type: 'FETCH_BOXES',
       payload: boxes
     });
   };

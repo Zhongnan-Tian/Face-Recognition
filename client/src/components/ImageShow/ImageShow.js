@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import shortid from 'shortid';
 
-import { updateImageSize } from '../../actions';
+import { fetchImageBoxes } from '../../actions';
 import './ImageShow.css';
 
 class ImageShow extends React.Component {
@@ -34,7 +34,7 @@ class ImageShow extends React.Component {
     // console.log(this.imageRef);
     // console.log('image height ' + this.imageRef.current.clientHeight);
     // console.log('image width ' + this.imageRef.current.clientWidth);
-    this.props.updateImageSize(
+    this.props.fetchImageBoxes(
       this.imageRef.current.clientHeight,
       this.imageRef.current.clientWidth
     );
@@ -96,5 +96,5 @@ const mapStateToProps = state => {
 
 export default connect(
   mapStateToProps,
-  { updateImageSize }
+  { fetchImageBoxes }
 )(ImageShow);

@@ -1,0 +1,34 @@
+/* hr {
+  height: 10px;
+  border: 0;
+  box-shadow: 0 10px 10px -10px #5bc0de inset;
+} */
+
+input::placeholder {
+  color: #e4efec !important;
+  font-size: 1em;
+  font-style: italic;
+}
+
+#tagOr {
+  overflow: hidden;
+  text-align: center;
+}
+#tagOr:before,
+#tagOr:after {
+  background-color: #5bc0de;
+  content: '';
+  display: inline-block;
+  height: 3px;
+  position: relative;
+  vertical-align: middle;
+  width: 50%;
+}
+#tagOr:before {
+  right: 0.5em;
+  margin-left: -50%;
+}
+#tagOr:after {
+  left: 0.5em;
+  margin-right: -50%;
+}
