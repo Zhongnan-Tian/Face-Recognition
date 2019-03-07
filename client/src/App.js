@@ -11,6 +11,7 @@ import MainContent from './components/MainContent';
 // import Rank from './components/Rank/Rank';
 // import ImageShow from './components/ImageShow/ImageShow';
 import LogIn from './components/LogIn/LogIn';
+import Register from './components/Register/Register.js';
 import { userSignedIn, userSignedOut } from './actions';
 
 const particlesOptions = {
@@ -101,6 +102,7 @@ class App extends React.Component {
                   <LogIn {...props} googleSignIn={this.onSignInClick} />
                 )}
               />
+              <Route path="/register" exact component={Register} />
             </Switch>
           </div>
         </BrowserRouter>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 // import GoogleAuth from '../GoogleAuth';
 import './LogIn.css';
 
@@ -57,11 +58,14 @@ class LogIn extends React.Component {
                   />
                   <button
                     type="submit"
-                    className="btn btn-info btn-block"
+                    className="btn btn-info btn-block mb-3"
                     // style={{ backgroundColor: 'transparent' }}
                   >
                     Login
                   </button>
+                  <p className="text-white">
+                    Not a user? <Link to="/register">Sign Up here</Link>
+                  </p>
                 </form>
               </div>
             </div>
