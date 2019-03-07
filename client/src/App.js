@@ -2,6 +2,7 @@ import React from 'react';
 import Particles from 'react-particles-js';
 import { connect } from 'react-redux';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { GOOGLE_CLIENT_ID } from './config';
 
 import Navigation from './components/Navigation/Navigation';
 import MainContent from './components/MainContent';
@@ -31,8 +32,7 @@ class App extends React.Component {
     window.gapi.load('client:auth2', () => {
       window.gapi.client
         .init({
-          clientId:
-            '306901847650-7bq1hj5d76atof1d69sgf2fhjm08f2eg.apps.googleusercontent.com',
+          clientId: GOOGLE_CLIENT_ID,
           scope: 'email'
         })
         .then(() => {
