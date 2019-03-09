@@ -12,6 +12,14 @@ const Register = () => {
                     <h4 className="text-white">Email</h4>
                   </label> */}
                 <input
+                  name="name"
+                  type="text"
+                  placeholder="Name"
+                  className="form-control mb-3 text-white"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+                <input
+                  name="email"
                   type="email"
                   placeholder="Email"
                   className="form-control mb-3 text-white"
@@ -21,8 +29,16 @@ const Register = () => {
                     <h4 className="text-white">Password</h4>
                   </label> */}
                 <input
+                  name="password"
                   type="password"
                   placeholder="Password"
+                  className="form-control mb-3 text-white"
+                  style={{ backgroundColor: 'transparent' }}
+                />
+                <input
+                  name="password2"
+                  type="password"
+                  placeholder="Confirm Password"
                   className="form-control mb-3 text-white"
                   style={{ backgroundColor: 'transparent' }}
                 />
