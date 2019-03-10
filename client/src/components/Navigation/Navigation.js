@@ -14,7 +14,7 @@ const Navigation = props => {
       >
         <div className="container">
           <a href="/" className="navbar-brand">
-            <i className="fab fa-connectdevelop fa-lg mr-2" />
+            <i className="fas fa-brain fa-lg mr-3" />
             Face Recognation
           </a>
           <button

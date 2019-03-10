@@ -1,15 +1,7 @@
-import { CLARIFAI_KEY } from '../config';
-import Clarifai from 'clarifai';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 
 import setAuthToken from '../utils/setAuthToken';
-
-// initialize with your api key.
-
-const app = new Clarifai.App({
-  apiKey: CLARIFAI_KEY
-});
 
 export const userSignedIn = id => {
   return {
@@ -33,57 +25,53 @@ export const updateImageURL = url => {
   };
 };
 
-// export const updateImageURL = url => dispatch => {
-//   dispatch({
-//     type: 'UPDATE_URL',
-//     payload: url
-//   });
-
-//   dispatch({
-//     type: 'CLEAR_ERRORS'
-//   });
-// };
-
 export const fetchImageBoxes = (height, width) => {
   return async function(dispatch, getState) {
-    //const imageSize = { height: height, width: width };
-
+    //clean previous boxes state first, in case this time request goesn't give back box sizes. If we didn't clean up old boxes, they would show up again even no new boxes.
     dispatch(cleanBoxes());
 
     const boxes = [];
 
-    const data = await app.models.predict(
-      Clarifai.FACE_DETECT_MODEL,
-      getState().imageURL
-    );
+    //API request will be sent out from server side to avoid explosure of API key.
+    axios
+      .post('http://localhost:5000/api/image/fetch', {
+        imageURL: getState().imageURL
+      })
+      .then(response => {
+        const allFaces = response.data.outputs[0].data.regions;
 
-    const allFaces = data.outputs[0].data.regions;
+        //no faces
+        if (!allFaces) {
+          // dispatch({
+          //   type: 'GET_ERRORS',
+          //   payload: 'No faces detected.'
+          // });
+        } else {
+          allFaces.forEach(face => {
+            let clarifaiFace = face.region_info.bounding_box;
 
-    //no faces
-    if (!allFaces) {
-      // dispatch({
-      //   type: 'GET_ERRORS',
-      //   payload: 'No faces detected.'
-      // });
-    } else {
-      allFaces.forEach(face => {
-        let clarifaiFace = face.region_info.bounding_box;
+            let box = {
+              leftCol: clarifaiFace.left_col * width,
+              topRow: clarifaiFace.top_row * height,
+              rightCol: width - clarifaiFace.right_col * width,
+              bottomRow: height - clarifaiFace.bottom_row * height
+            };
 
-        let box = {
-          leftCol: clarifaiFace.left_col * width,
-          topRow: clarifaiFace.top_row * height,
-          rightCol: width - clarifaiFace.right_col * width,
-          bottomRow: height - clarifaiFace.bottom_row * height
-        };
+            boxes.push(box);
+          });
 
-        boxes.push(box);
-      });
-
-      dispatch({
-        type: 'FETCH_BOXES',
-        payload: boxes
-      });
-    }
+          dispatch({
+            type: 'FETCH_BOXES',
+            payload: boxes
+          });
+        }
+      })
+      .catch(error =>
+        dispatch({
+          type: 'GET_ERRORS',
+          payload: error.data
+        })
+      );
   };
 };
 
