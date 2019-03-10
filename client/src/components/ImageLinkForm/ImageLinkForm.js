@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { updateImageURL } from '../../actions';
+import { updateImageURL, increaseRecords } from '../../actions';
 
 class ImageLinkForm extends React.Component {
   state = { inputText: '' };
@@ -13,6 +13,7 @@ class ImageLinkForm extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     this.props.updateImageURL(this.state.inputText);
+    this.props.increaseRecords();
   };
 
   render() {
@@ -48,5 +49,5 @@ class ImageLinkForm extends React.Component {
 
 export default connect(
   null,
-  { updateImageURL }
+  { updateImageURL, increaseRecords }
 )(ImageLinkForm);

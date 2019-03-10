@@ -33,9 +33,22 @@ export const updateImageURL = url => {
   };
 };
 
+// export const updateImageURL = url => dispatch => {
+//   dispatch({
+//     type: 'UPDATE_URL',
+//     payload: url
+//   });
+
+//   dispatch({
+//     type: 'CLEAR_ERRORS'
+//   });
+// };
+
 export const fetchImageBoxes = (height, width) => {
   return async function(dispatch, getState) {
     //const imageSize = { height: height, width: width };
+
+    dispatch(cleanBoxes());
 
     const boxes = [];
 
@@ -46,25 +59,31 @@ export const fetchImageBoxes = (height, width) => {
 
     const allFaces = data.outputs[0].data.regions;
 
-    allFaces.forEach(face => {
-      let clarifaiFace = face.region_info.bounding_box;
+    //no faces
+    if (!allFaces) {
+      // dispatch({
+      //   type: 'GET_ERRORS',
+      //   payload: 'No faces detected.'
+      // });
+    } else {
+      allFaces.forEach(face => {
+        let clarifaiFace = face.region_info.bounding_box;
 
-      let box = {
-        leftCol: clarifaiFace.left_col * width,
-        topRow: clarifaiFace.top_row * height,
-        rightCol: width - clarifaiFace.right_col * width,
-        bottomRow: height - clarifaiFace.bottom_row * height
-      };
+        let box = {
+          leftCol: clarifaiFace.left_col * width,
+          topRow: clarifaiFace.top_row * height,
+          rightCol: width - clarifaiFace.right_col * width,
+          bottomRow: height - clarifaiFace.bottom_row * height
+        };
 
-      boxes.push(box);
-    });
+        boxes.push(box);
+      });
 
-    dispatch({
-      type: 'FETCH_BOXES',
-      payload: boxes
-    });
-
-    dispatch(increaseRecords());
+      dispatch({
+        type: 'FETCH_BOXES',
+        payload: boxes
+      });
+    }
   };
 };
 
@@ -119,8 +138,12 @@ export const logoutLocalUser = () => dispatch => {
   setAuthToken(false);
   // Set current user to {} which will set isAuthenticated to false
   dispatch(setLocalUser({}));
+  //clean up store states:
   dispatch(updateImageURL(''));
   dispatch(cleanBoxes());
+  dispatch({
+    type: 'CLEAR_ERRORS'
+  });
 };
 
 export const increaseRecords = () => (dispatch, getState) => {

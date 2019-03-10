@@ -12,6 +12,15 @@ class ImageShow extends React.Component {
     this.imageRef = React.createRef();
   }
 
+  componentDidMount() {
+    window.addEventListener('resize', () => {
+      this.props.fetchImageBoxes(
+        this.imageRef.current.clientHeight,
+        this.imageRef.current.clientWidth
+      );
+    });
+  }
+
   // componentDidUpdate() {
   //   // if (this.imageRef.current) {
   //   console.log('image height ' + this.imageRef.current.clientHeight);
@@ -62,16 +71,23 @@ class ImageShow extends React.Component {
       return null;
     } else {
       return (
-        <div className="card">
-          <img
-            id="thatimage"
-            ref={this.imageRef}
-            className="card-img"
-            src={this.props.imageURL}
-            alt=""
-            onLoad={this.onLoad}
-          />
-          {this.renderSquares()}
+        <div>
+          {/* <h5 className="text-white">
+            {this.props.errors
+              ? 'No faces detected. Please retry with another picture...'
+              : ''}
+          </h5> */}
+          <div className="card">
+            <img
+              id="thatimage"
+              ref={this.imageRef}
+              className="card-img"
+              src={this.props.imageURL}
+              alt=""
+              onLoad={this.onLoad}
+            />
+            {this.renderSquares()}
+          </div>
         </div>
       );
     }
@@ -91,7 +107,11 @@ class ImageShow extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { imageURL: state.imageURL, boxes: state.boxes };
+  return {
+    imageURL: state.imageURL,
+    boxes: state.boxes
+    // errors: state.errors
+  };
 };
 
 export default connect(
