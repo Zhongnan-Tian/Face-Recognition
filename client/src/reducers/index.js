@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import authReducer from './authReducer';
+import errorReducer from './errorReducer';
 
 // const INITIAL_STATE = {
 //   url: '',
@@ -35,5 +36,6 @@ const imageBoxReducer = (state = [], action) => {
 export default combineReducers({
   imageURL: imageURLReducer,
   boxes: imageBoxReducer,
-  auth: authReducer
+  auth: authReducer,
+  errors: errorReducer
 });

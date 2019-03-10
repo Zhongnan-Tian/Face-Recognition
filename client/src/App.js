@@ -1,18 +1,17 @@
 import React from 'react';
 import Particles from 'react-particles-js';
 import { connect } from 'react-redux';
+import jwt_decode from 'jwt-decode';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { GOOGLE_CLIENT_ID } from './config';
 
 import Navigation from './components/Navigation/Navigation';
 import MainContent from './components/MainContent';
-// import Logo from './components/Logo/Logo';
-// import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm.js';
-// import Rank from './components/Rank/Rank';
-// import ImageShow from './components/ImageShow/ImageShow';
 import LogIn from './components/LogIn/LogIn';
 import Register from './components/Register/Register.js';
 import { userSignedIn, userSignedOut } from './actions';
+import setAuthToken from './utils/setAuthToken';
+import { setLocalUser, logoutLocalUser } from './actions/';
 
 const particlesOptions = {
   particles: {
@@ -42,6 +41,25 @@ class App extends React.Component {
           this.auth.isSignedIn.listen(this.onAuthChange);
         });
     });
+
+    // Check for token
+    if (localStorage.jwtToken) {
+      // Set auth token header auth
+      setAuthToken(localStorage.jwtToken);
+      // Decode token and get user info and exp
+      const decoded = jwt_decode(localStorage.jwtToken);
+      // Set user and isAuthenticated
+      this.props.setLocalUser(decoded);
+
+      // Check for expired token
+      const currentTime = Date.now() / 1000;
+      if (decoded.exp < currentTime) {
+        // Logout user
+        this.props.logoutLocalUser();
+        // Redirect to login
+        window.location.href = '/login';
+      }
+    }
   }
 
   onAuthChange = isSignedIn => {
@@ -61,11 +79,9 @@ class App extends React.Component {
   };
 
   render() {
-    console.log('login: ' + this.props.isSignedIn);
-
-    // MyLogInPage = () => {
-    //   return <LogIn googleSignIn={this.onSignInClick} />;
-    // };
+    // console.log(
+    //   'login: ' + (this.props.isSignedIn || this.props.localUserSignedIn)
+    // );
 
     return (
       <div id="app" className="text-center">
@@ -88,7 +104,7 @@ class App extends React.Component {
                 path="/"
                 exact
                 render={props =>
-                  this.props.isSignedIn ? (
+                  this.props.isSignedIn || this.props.localUserSignedIn ? (
                     <MainContent {...props} />
                   ) : (
                     <LogIn {...props} googleSignIn={this.onSignInClick} />
@@ -112,10 +128,14 @@ class App extends React.Component {
 }
 
 const mapStateToProps = state => {
-  return { isSignedIn: state.auth.isSignedIn };
+  return {
+    isSignedIn: state.auth.isSignedIn,
+    localUserSignedIn: state.auth.localUserSignedIn,
+    localUser: state.auth.isSignedIn
+  };
 };
 
 export default connect(
   mapStateToProps,
-  { userSignedIn, userSignedOut }
+  { userSignedIn, userSignedOut, setLocalUser, logoutLocalUser }
 )(App);

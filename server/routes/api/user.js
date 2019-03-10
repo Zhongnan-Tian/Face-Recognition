@@ -62,7 +62,8 @@ router.post('/login', (req, res) => {
                 const payload = {
                   id: data[0].id, //this is the id from table users
                   name: data[0].name,
-                  email: data[0].email
+                  email: data[0].email,
+                  records: data[0].records
                 };
 
                 //Sign Token
@@ -164,9 +165,9 @@ router.put(
       .from('users')
       .where('id', '=', id)
       .increment('records', 1)
-      .returning('records')
-      .then(records => {
-        res.json(records[0]);
+      .returning('*')
+      .then(user => {
+        res.json(user[0]);
       })
       .catch(err => {
         errors.records = 'Not Found';

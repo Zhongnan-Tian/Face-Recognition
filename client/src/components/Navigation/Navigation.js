@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { logoutLocalUser } from '../../actions';
 import './Navigation.css';
 // import GoogleAuth from '../GoogleAuth';
 
@@ -35,6 +36,14 @@ const Navigation = props => {
                     Logout
                   </button>
                 ) : null}
+                {props.localUserSignedIn ? (
+                  <button
+                    onClick={props.logoutLocalUser}
+                    className="btn btn-info"
+                  >
+                    Log Out
+                  </button>
+                ) : null}
               </li>
             </ul>
           </div>
@@ -45,7 +54,13 @@ const Navigation = props => {
 };
 
 const mapStateToProps = state => {
-  return { isSignedIn: state.auth.isSignedIn };
+  return {
+    isSignedIn: state.auth.isSignedIn,
+    localUserSignedIn: state.auth.localUserSignedIn
+  };
 };
 
-export default connect(mapStateToProps)(Navigation);
+export default connect(
+  mapStateToProps,
+  { logoutLocalUser }
+)(Navigation);

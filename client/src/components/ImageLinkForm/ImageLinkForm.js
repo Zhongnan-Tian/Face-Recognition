@@ -22,8 +22,8 @@ class ImageLinkForm extends React.Component {
           <div className="row">
             <div className="col-md-10 m-auto">
               <p className="lead text-white">
-                This Magic Brain will detect faces in your pictures. Give it a
-                try.
+                This Magic Brain will detect faces in your pictures. Paste
+                picture link and give it a try.
               </p>
               <form className="form-group" onSubmit={this.onSubmit}>
                 <input
