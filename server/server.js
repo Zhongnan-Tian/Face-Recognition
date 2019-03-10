@@ -31,9 +31,14 @@ require('./config/passport')(passport);
 //   }
 // });
 
-//User Routes
+//user Routes
 app.use('/api/users', users);
+//image Routes
 app.use('/api/image', image);
+
+app.get('/', (req, res) => {
+  res.json({ msg: 'This is homepage.' });
+});
 
 const port = process.env.PORT || 5000;
 
