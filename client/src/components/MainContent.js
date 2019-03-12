@@ -9,9 +9,13 @@ const MainContent = props => {
     <div>
       <Rank />
       <ImageLinkForm />
-      <ImageShow />
+      {props.imageURL && <ImageShow />}
     </div>
   );
 };
 
-export default MainContent;
+const mapStateToProps = state => {
+  return { imageURL: state.imageURL };
+};
+
+export default connect(mapStateToProps)(MainContent);
