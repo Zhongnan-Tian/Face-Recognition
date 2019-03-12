@@ -22,7 +22,7 @@ Log in:
 ![alt text](screens/login.JPG)
 
 Login with Google:
-![](screens/ googlesignin.gif)
+![](screens/googlesignin.gif)
 
 Homepage after sign in: 
 ![alt text](screens/homepage.JPG)
