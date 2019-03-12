@@ -5,7 +5,10 @@ import { fetchCurrentUser } from '../../actions';
 
 class Rank extends React.Component {
   componentDidMount() {
-    this.props.fetchCurrentUser();
+    if (this.props.localUserSignedIn) {
+      //if user logs from google, no need to fetch user.
+      this.props.fetchCurrentUser();
+    }
   }
 
   render() {

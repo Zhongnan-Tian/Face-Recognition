@@ -13,7 +13,9 @@ class ImageLinkForm extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     this.props.updateImageURL(this.state.inputText);
-    this.props.increaseRecords();
+    if (this.props.localUserSignedIn) {
+      this.props.increaseRecords(); //only increase records for local signed in users.
+    }
   };
 
   render() {
